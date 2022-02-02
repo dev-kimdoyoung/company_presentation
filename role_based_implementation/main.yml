@@ -1,0 +1,7 @@
+- name: OS 및 DB/WAS 구성
+  hosts: web_group
+  become: true
+  roles:
+    - os
+    # - was
+    # - dba

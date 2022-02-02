@@ -1,0 +1,25 @@
+---
+- name: "OS 호스트 네임"
+  hostname:
+    name: "{{ my_hostname }}"
+
+- name: "시스템 열람용 그룹"
+  group:
+    name: "{{ infra_group_name }}"
+    state: present
+
+- name: 시스템 열람용 계정
+  user:
+    name: "{{ infra_check_purposed_username }}"
+    password: admin@#123
+    group: "{{ infra_group_name }}"
+    shell: /bin/bash
+    state: present
+
+- name: 인프라 관리용 디렉토리
+  ansible.builtin.file:
+    path: "{{ infra_management_directory }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ infra_check_purposed_username }}"
+    group: "{{ infra_group_name }}"

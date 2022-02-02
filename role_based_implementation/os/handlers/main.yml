@@ -1,0 +1,5 @@
+---
+# 앤서블 모듈 실행 중 지정된 이벤트(name)가 발생할 경우 해당 모듈을 실행
+- name: file copy complete
+  debug:
+    var="{{ my_hostname }}에 {{ src }} 파일 전송 완료"

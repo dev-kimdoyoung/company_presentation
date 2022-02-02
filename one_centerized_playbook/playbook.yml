@@ -1,0 +1,12 @@
+---
+- name: OS 구성
+  hosts: web_group
+  become: true
+  vars_files:
+    - ./vars/main.yml
+  tasks:
+    - name: OS 기본 구성
+      import_tasks: ./configuration/os_config.yml
+
+    - name: 인프라 관리 및 모니터링 용도 솔루션 설치 파일 전송
+      import_tasks: ./configuration/move_infra_management_file.yml
