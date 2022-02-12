@@ -1,18 +1,14 @@
 ---
 # C언어 기준 - 함수 실제 구현 로직
-- name: "{{ src }} 파일을 {{ dest }} 위치로 전송 중"
+- name: "파일 전송 중"
   ansible.builtin.copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ infra_check_purposed_username }}"
     group: "{{ infra_group_name }}"
     mode: '0755'
+# 위 task에 changed가 있을 때 아래 notify 트리거 적용
+  notify:
+  - 보안취약점 패치 시작
+  - 보안취약점 패치 완료
   loop: "{{ infra_file }}"
-  notify: ['file copy complete']
-
-- name: 보안취약점 패치
-  command: sh /Admin/os_secpol.sh
-  register: result
-
-- debug: var=result
-

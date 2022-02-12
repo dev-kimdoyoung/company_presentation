@@ -8,9 +8,9 @@
   - name: "호스트 네임 설정"
     hostname:
       name: "{{ my_hostname }}"
-    register: result
+  #   register: result
 
-  - debug: var=result
+  # - debug: var=result
 
   - name: "시스템 열람용 그룹"
     group:
@@ -33,7 +33,7 @@
       owner: "{{ infra_check_purposed_username }}"
       group: "{{ infra_group_name }}"
 
-  - name: "{{ src }} 파일을 {{ dest }} 위치로 전송 중"
+  - name: "파일 전송 중"
     ansible.builtin.copy:
       src: "{{ item.src }}"
       dest: "{{ item.dest }}"
@@ -49,4 +49,5 @@
     command: sh /Admin/os_secpol.sh
     register: result
 
-  - debug: var=result
+  # - debug: var=result.stdout_lines
+  - debug: var=result.stdout_lines

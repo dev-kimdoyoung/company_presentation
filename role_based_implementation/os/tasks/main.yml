@@ -1,5 +1,8 @@
 ---
 # C언어 기준 - 함수 프로토타입 선언
+- name: OS 매트릭스 수집
+  import_tasks: configuration/get_facts.yml
+
 - name: OS 기본 설정
   import_tasks: configuration/os_config.yml
 
