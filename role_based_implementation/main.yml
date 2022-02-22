@@ -1,6 +1,6 @@
-- name: OS 및 DB/WAS 구성
+- name: Configure OS and DB/WAS
   hosts: web_group
-  gather_facts: true
+  gather_facts: false
   become: true
   roles:
     - os

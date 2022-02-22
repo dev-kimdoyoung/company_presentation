@@ -1,9 +1,8 @@
 ---
-# 앤서블 모듈 실행 중 지정된 이벤트(name)가 발생할 경우 해당 모듈을 실행
-- name: 보안취약점 패치 시작
-  command: sh /Admin/os_secpol.sh
+- name: "Start Linux vulnerability patch"
+  command: sh /Admin/3.sh
   register: result
 
-- name: 보안취약점 패치 완료
+- name: "End to Linux vulnerability patch"
   debug: var=result.stdout_lines
 

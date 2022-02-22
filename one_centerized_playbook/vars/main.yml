@@ -1,11 +1,10 @@
 ---
-# 앤서블 플레이북에서 사용할 변수 (default 디렉토리보다 높은 우선순위)
 my_hostname: 'web01'
 
 infra_file: [
-  {'src': 'ontune', 'dest': '/Admin/ontune'},
-  {'src': 'netbackup', 'dest': '/Admin/netbackup'},
-  {'src': 'os_secpol.sh', 'dest': '/Admin'},
+  {'src': '1', 'dest': '/Admin/1'},
+  {'src': '2', 'dest': '/Admin/2'},
+  {'src': '3.sh', 'dest': '/Admin'},
 ]
 
 infra_management_directory: '/Admin'

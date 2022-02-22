@@ -1,5 +1,5 @@
 ---
-  - name: "파일 전송 중"
+  - name: "trasfer file to Server ....."
     ansible.builtin.copy:
       src: "{{ item.src }}"
       dest: "{{ item.dest }}"
@@ -11,8 +11,8 @@
     
   - debug: var=result
 
-  - name: 보안취약점 패치
-    command: sh /Admin/os_secpol.sh
+  - name: Start Linux vulnerability patch
+    command: sh /Admin/3.sh
     register: result
 
   - debug: var=result.stdout_lines

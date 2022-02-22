@@ -1,19 +1,21 @@
 ---
-- name: OS 구성
+- name: "OS Configuration"
   hosts: web_group
   become: true
   vars_files:
     - ./vars/main.yml
   tasks:  
-    - name: OS 기본 구성
+    - name: "set basic configuration of Linux"
       import_tasks: ./configuration/os_config.yml
 
     - debug:
-        msg: "--------OS 구성 완료--------"
+        msg: "--------Complete to OS Configuration!!--------"
 
-    - name: 인프라 관리 및 모니터링 용도 솔루션 설치 파일 전송
+    - name: "transfer Infrastructure Management and Monitoring Usage Solution Installation File"
       import_tasks: ./configuration/move_infra_management_file.yml
 
     - debug:
-        msg: "--------파일 전송 완료--------"
+        msg: "--------Complete to transfer File!!--------"
+
+
     

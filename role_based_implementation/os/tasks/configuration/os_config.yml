@@ -1,23 +1,53 @@
 ---
-- name: "OS 호스트 네임"
+- name: "Configure hostname"
   hostname:
     name: "{{ my_hostname }}"
 
-- name: "시스템 열람용 그룹"
+- name: "disable to SElinux"
+  selinux:
+    state: disabled
+
+- name: "Configure specific packages"
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ installed_packages }}"
+
+- name: "Configure specific services"
+  systemd:
+    name: "{{ item.name }}"
+    state: "{{ item.service_state }}"
+    enabled: "{{ item.enabled }}"
+  loop: "{{ services_config }}"
+
+- name: "delete the previous NTP configuration file"
+  file:
+    path: /etc/ntp.conf
+    state: absent
+
+- name: "copy newly NTP configuration file to destination"
+  copy:
+    src: "ntp.conf"
+    dest: "/etc"
+    owner: "root"
+    group: "root"
+    mode: '0755'
+
+- name: "configure group purposed to view"
   group:
     name: "{{ infra_group_name }}"
     state: present
 
-- name: 시스템 열람용 계정
+- name: "configure user purposed to view"
   user:
     name: "{{ infra_check_purposed_username }}"
-    password: admin@#123
+    password: "{{ default_password }}"
     group: "{{ infra_group_name }}"
     shell: /bin/bash
     state: present
 
-- name: 인프라 관리용 디렉토리
-  ansible.builtin.file:
+- name: "Infrastructure management directory"
+  file:
     path: "{{ infra_management_directory }}"
     state: directory
     mode: '0755'

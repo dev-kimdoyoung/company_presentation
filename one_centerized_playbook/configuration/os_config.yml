@@ -1,25 +1,25 @@
 ---
-- name: "호스트 네임 설정"
+- name: "hostname configuration"
   hostname:
     name: "{{ my_hostname }}"
   register: result
 
 - debug: var=result
 
-- name: "시스템 열람용 그룹"
+- name: "configure group purposed to view"
   group:
     name: "{{ infra_group_name }}"
     state: present
 
-- name: 시스템 열람용 계정
+- name: "configure user purposed to view"
   user:
     name: "{{ infra_check_purposed_username }}"
-    password: admin@#123
+    password: 123
     group: "{{ infra_group_name }}"
     shell: /bin/bash
     state: present
 
-- name: 인프라 관리용 디렉토리
+- name: "Infrastructure management directory"
   ansible.builtin.file:
     path: "{{ infra_management_directory }}"
     state: directory
