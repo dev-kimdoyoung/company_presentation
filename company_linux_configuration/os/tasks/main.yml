@@ -1,0 +1,22 @@
+---
+# like Function Prototype in C Language
+- name: "gather from designated Linux"
+  import_tasks: configuration/get_facts.yml
+  
+- name: "set basic configuration of Redhat 7"
+  import_tasks: configuration/os_config_rhel7.yml
+  when:
+    - ansible_facts["distribution"] == "RedHat"
+    - ansible_facts["distribution_major_version"] == "7"
+
+- name: "set basic configuration of Redhat 8"
+  import_tasks: configuration/os_config_rhel8.yml
+  when:
+    - ansible_facts["distribution"] == "RedHat"
+    - ansible_facts["distribution_major_version"] == "8"
+
+#- name: "set Disk partition and LVM in Linux"
+#  import_tasks: configuration/lvm.yml
+
+- name: "transfer Infrastructure Management and Monitoring Usage Solution Installation File"
+  import_tasks: configuration/move_infra_management_file.yml

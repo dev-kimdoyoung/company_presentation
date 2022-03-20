@@ -1,0 +1,24 @@
+---
+- name: "trasfer file to Server ....."
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0755
+  notify:
+    - Start Linux OS configuration
+    - End to Linux OS configuration
+  loop: "{{ infra_file }}"
+
+# - name: "unarchive a file that is already on the remote machine"
+#   unarchive:
+#     src: "{{ item.src }}"
+#     dest: "{{ item.dest }}"
+#     mode: '0755'
+#     remote_src: yes
+#   notify:
+#   - install SSR Agent...
+#   - complete to install SSR Agent!!!
+#   changed_when: true    # true | false
+#   loop: "{{ infra_archive_file }}"

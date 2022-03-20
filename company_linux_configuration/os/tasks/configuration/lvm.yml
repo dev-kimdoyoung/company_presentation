@@ -1,0 +1,40 @@
+---
+- name: "Configure Disk Partition in Linux Server"
+  parted:
+    device: "{{ item.device }}"
+    number: "{{ item.disk_partition_number }}"
+    part_type: "{{ item.part_type }}"
+    part_start: "{{ item.part_start }}"
+    part_end: "{{ item.part_end }}"
+    label: "{{ item.label }}"
+    state: present
+  loop: "{{ parition_config }}"
+
+- name: "Configure Physical Volume and Volume Group"
+  lvg:
+    pvs: "{{ item.pv_name }}"
+    vg: "{{ item.vg_name }}"
+    state: present
+  loop: "{{ lvm_config }}"
+
+- name: "Configure Logical Volume"
+  lvol:
+    vg: "{{ item.vg_name }}"
+    lv: "{{ item.lv_name }}"
+    size: "{{ item.size }}"      # 200g | 100%FREE | 100%vg | 100%PVS
+    state: present
+  loop: "{{ lvm_config }}"
+
+- name: "Configure FileSystem on the LVM"
+  filesystem:
+    dev: "/dev/{{ item.vg_name }}/{{ item.lv_name }}"
+    fstype: "{{ item.fstype }}"
+  loop: "{{ lvm_config }}"
+
+- name: "mount the specified path"
+  mount:
+    path: "{{ item.mount_points }}"
+    src: "/dev/{{ item.vg_name }}/{{ item.lv_name }}"
+    fstype: "{{ item.fstype }}"
+    state: mounted
+  loop: "{{ lvm_config }}"

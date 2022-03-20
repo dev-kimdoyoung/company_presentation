@@ -1,0 +1,48 @@
+---
+- name: "disable to SElinux"
+  selinux:
+    state: disabled
+
+- name: "Configure specific packages"
+  dnf:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ rhel8_installed_packages }}"
+
+- name: "Configure specific system daemon"
+  systemd:
+    name: "{{ item.name }}"
+    state: "{{ item.service_state }}"
+    enabled: "{{ item.enabled }}"
+  loop: "{{ rhel8_services_config }}"
+
+- name: "copy newly Chrony configuration file to destination"
+  template:
+    src: "chrony.j2"
+    dest: "/etc/chrony.conf"
+    owner: "root"
+    group: "root"
+    mode: '0755'
+  # notify:
+  # - trigger to configure ntp server
+
+- name: "configure group purposed to view"
+  group:
+    name: "{{ infra_group_name }}"
+    state: present
+
+- name: "configure user purposed to view"
+  user:
+    name: "{{ infra_check_purposed_username }}"
+    password: "{{ default_password | password_hash('sha512') }}"
+    group: "{{ infra_group_name }}"
+    shell: /bin/bash
+    state: present
+
+- name: "Infrastructure management directory"
+  file:
+    path: "{{ infra_management_directory }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ infra_check_purposed_username }}"
+    group: "{{ infra_group_name }}"

@@ -1,0 +1,10 @@
+- name: Configure OS and DB/WAS
+  hosts: web_group
+  gather_facts: true
+  become: true
+  vars:
+    - net: "general"      # a | b | c | no
+  roles:
+    - os
+    # - was
+    # - dba

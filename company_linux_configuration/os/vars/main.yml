@@ -1,0 +1,82 @@
+---
+### 1. os_config.yml
+# 1.2 right to User/Group and setting configuration
+infra_management_directory: '/Admin'
+infra_group_name: 'wheel'
+infra_check_purposed_username: 'tech'
+default_password: 'admin'
+
+# 1.3 current packages state management
+rhel7_installed_packages: [
+  # 'ntp',
+]
+
+rhel8_installed_packages: [
+  'chrony',
+]
+
+# 1.4 configure NTP
+a_ntp:
+- 1.1.1.3
+- 1.1.1.4
+
+general_ntp:
+- 2.2.2.3
+- 2.2.2.4
+
+# 1.5 current services state management
+### enabled: yes | no
+### service_state: restarted | stopped | started
+rhel7_services_config: [
+  { 'name' : 'ntpd', 'service_state': 'restarted', 'enabled': yes},
+  # { 'name' : 'firewalld', 'service_state': 'stopped', 'enabled': no},
+]
+
+rhel8_services_config: [
+  { 'name' : 'chronyd', 'service_state': 'restarted', 'enabled': yes},
+  # { 'name' : 'firewalld', 'service_state': 'stopped', 'enabled': no},
+]
+
+### 2. move_infra_management_file.yml
+# 2.1 transfer infrastructure management file to destination
+infra_archive_file: [
+  {'src': '/Admin/ontune_agent_20210105.tar.gz', 'dest': '/Admin'},
+  {'src': '/Admin/agent_linux.tar', 'dest': '/Admin'},
+]
+
+infra_file: [
+  # {'src': 'OS_set_config_v2.sh', 'dest': '/Admin/OS_set_config_v2.sh'},
+  # {'src': 'set_secpol_OS_v2.sh', 'dest': '/Admin/set_secpol_OS_v2.sh'},
+  {'src': 'ontune_agent_20210105.tar.gz', 'dest': '/Admin/ontune_agent_20210105.tar.gz'},
+  {'src': 'agent_linux.tar', 'dest': '/Admin/agent_linux.tar'},
+]
+
+### 3. lvm.yml
+# 3.1 Disk Partition Management
+parition_config:
+- {
+  device: /dev/sda,
+  part_start: 122GiB,
+  part_end: 250GiB,
+  part_type: primary,
+  disk_partition_number: 4,
+  label: gpt,
+}
+# 3.2 LVM configure management
+lvm_config:
+- {
+  pv_name: "/dev/sda4",
+  vg_name: "vgoracle",
+  lv_name: "lv_oracle",
+  fstype: "ext4",
+  size: "50G",
+  mount_points: "/oracle",
+}
+- {
+  pv_name: "/dev/sda4",
+  vg_name: "vgoracle",
+  lv_name: "lv_data",
+  fstype: "ext4",
+  size: "100%FREE",
+  mount_points: "/oracle/data",
+}

@@ -1,0 +1,36 @@
+---
+- name: "Start Linux OS configuration"
+  command: sh /Admin/OS_set_config_v2.sh
+  register: result
+
+- name: "End to Linux OS configuration"
+  debug: var=result.stdout_lines
+
+- name: "trigger to configure ntp server"
+  systemd:
+    name: "ntp"
+    state: "restarted"
+    enabled: yes
+  when:
+    - net != "no"
+    - ansible_facts["distribution"] == "RedHat"
+    - ansible_facts["distribution_major_version"] == "7"
+
+- name: "trigger to configure chrony server"
+  systemd:
+    name: "chronyd"
+    state: "restarted"
+    enabled: yes
+  when:
+    - net != "no"
+    - ansible_facts["distribution"] == "RedHat"
+    - ansible_facts["distribution_major_version"] == "8"
+
+- name: "install SSR Agent..."
+  command: "sh Install.sh 2 0 /SSR"
+  args:
+    chdir: /Admin/linux
+  register: result
+
+- name: "complete to install SSR Agent!!!"
+  debug: var=result.stdout_lines
