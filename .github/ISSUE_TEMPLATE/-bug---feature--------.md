@@ -1,7 +1,7 @@
 ---
 name: "[Bug | Feature] 템플릿 이름"
 about: 버그 및 피처에 대한 이슈 템플릿
-title: ''
+title: "[Bug | Feature] 템플릿 이름"
 labels: bug
 assignees: ''
 
